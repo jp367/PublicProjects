@@ -44,7 +44,7 @@ public class Knapsack {
 		return new Solution(chosenItems, maxValue);
 	}
 
-	public Solution dynamicSolve() {
+	public Solution bottomUp() {
 		int[][] bestValues = new int[nbItems + 1][maxWeight + 1];
 		for (int i = 0; i <= maxWeight; ++i) {
 			bestValues[0][i] = 0;
@@ -76,6 +76,39 @@ public class Knapsack {
 		}
 
 		return new Solution(chosenItems, bestValues[nbItems][maxWeight]);
+	}
+
+	public Solution topDown() {
+		List<Item> chosenItems = new ArrayList<>();
+		int bestValue = topDownUtil(0, maxWeight, new int[nbItems], chosenItems);
+		return new Solution(chosenItems, bestValue);
+	}
+
+	public int topDownUtil(int i, int weight, int[] memo, List<Item> chosenItems) {
+		if (i >= nbItems) {
+			return 0;
+		}
+		if (memo[i] != 0) {
+			return memo[i];
+		}
+
+		int res;
+		if (items.get(i).getWeight() > weight) {
+			res = topDownUtil(i + 1, weight, memo, chosenItems);
+		} else {
+			int res1 = items.get(i).getValue() + topDownUtil(i + 1, weight - items.get(i).getWeight(), memo, chosenItems);
+			int res2 = topDownUtil(i + 1, weight, memo, chosenItems);
+			
+			if (res1 > res2) {
+				chosenItems.add(items.get(i));
+				res = res1;
+			} else {
+				res = res2;
+			}
+		}
+
+		memo[i] = res;
+		return res;
 	}
 
 	@Override

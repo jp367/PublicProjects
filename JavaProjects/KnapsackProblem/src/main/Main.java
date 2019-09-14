@@ -11,8 +11,11 @@ public class Main {
 		System.out.println("Greedy approach:");
 		System.out.println(knapsack.greedySolve());
 
-		System.out.println("Dynamic approach:");
-		System.out.println(knapsack.dynamicSolve());
+		System.out.println("Bottom-Up approach:");
+		System.out.println(knapsack.bottomUp());
+		
+		System.out.println("Top-Down approach: ");
+		System.out.println(knapsack.topDown());
 	}
 
 	public static void main(String[] args) {
